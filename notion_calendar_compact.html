@@ -20,19 +20,25 @@
   }
   .calendar{
     width:100%;
-    padding:0 0px 0px;
+    padding:0;
+    margin:0;
   }
 .header{
   display:grid;
-  grid-template-columns:32px 1fr 32px;
+  grid-template-columns:1fr auto 1fr;
   align-items:center;
   height:32px;
   margin-bottom:1px;
 }
 
-.header button:first-child,
+.header button:first-child{
+  justify-self:end;
+  margin-right:12px;
+}
+
 .header button:last-child{
-  justify-self:center;
+  justify-self:start;
+  margin-left:12px;
 }
   .title{
     text-align:center;
@@ -92,6 +98,8 @@
     .day{font-size:12px;border-radius:5px}
   }
   html, body{
+    margin:0;
+    adding:0;
   height:auto;
   min-height:0;
   overflow:hidden;
