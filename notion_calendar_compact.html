@@ -159,11 +159,13 @@ function render(){
     grid.appendChild(cell);
   }
 
-  // Nästa månads dagar: fyll alltid ut till 6 veckor (42 rutor).
-  const remaining=42-grid.children.length;
-  for(let day=1;day<=remaining;day++){
-    grid.appendChild(makeDay(day,true));
-  }
+// Fyll bara ut till en komplett sista vecka.
+const totalCells = grid.children.length;
+const remaining = (7 - (totalCells % 7)) % 7;
+
+for(let day=1;day<=remaining;day++){
+  grid.appendChild(makeDay(day,true));
+}
 }
 
 document.getElementById("prev").addEventListener("click",()=>{
