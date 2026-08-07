@@ -24,22 +24,18 @@
     margin:0;
   }
 .header{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
+  display:flex;
+  justify-content:center;
   align-items:center;
   height:32px;
-  margin-bottom:5px;
+  gap:12px;
+  margin-bottom:8px;
 }
 
-.header button:first-child{
-  justify-self:end;
-  margin-right:10px;
+.header button{
+  flex:0 0 auto;
 }
 
-.header button:last-child{
-  justify-self:start;
-  margin-left:10px;
-}
   .title{
     text-align:center;
     font-size:15px;
