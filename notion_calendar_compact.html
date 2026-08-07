@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compact Notion Calendar</title>
+<style>
+  :root{
+    --text:#000;
+    --muted:#777;
+    --today:#521919;
+    --today-text:#fff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:transparent}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text);
+  }
+  .calendar{
+    width:100%;
+    padding:0 2px 2px;
+  }
+  .header{
+    display:grid;
+    grid-template-columns:32px 1fr 32px;
+    align-items:center;
+    height:38px;
+    margin-bottom:3px;
+  }
+  .title{
+    text-align:center;
+    font-size:15px;
+    line-height:20px;
+    font-weight:500;
+    letter-spacing:-.15px;
+  }
+  button{
+    width:30px;height:30px;
+    padding:0;border:0;
+    background:transparent;
+    color:var(--text);
+    border-radius:6px;
+    cursor:pointer;
+    font-size:22px;
+    font-weight:300;
+    line-height:28px;
+  }
+  button:hover{background:rgba(0,0,0,.055)}
+  .weekdays,.grid{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+  }
+  .weekday{
+    text-align:center;
+    font-size:11px;
+    line-height:16px;
+    font-weight:500;
+    color:var(--muted);
+    padding:0 0 5px;
+  }
+  .day{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    aspect-ratio:1 / 1;
+    max-height:48px;
+    font-size:13px;
+    line-height:1;
+    font-weight:400;
+    border-radius:50%;
+  }
+  .empty{visibility:hidden}
+  .today{
+    background:var(--today);
+    color:var(--today-text);
+  }
+
+  /* När kolumnen är smalare blir kalendern automatiskt tätare. */
+  @media (max-width:420px){
+    .header{height:34px;grid-template-columns:28px 1fr 28px}
+    .title{font-size:14px}
+    button{width:27px;height:27px;font-size:20px}
+    .weekday{font-size:10px;padding-bottom:4px}
+    .day{font-size:12px}
+  }
+</style>
+</head>
+<body>
+<div class="calendar" id="calendar">
+  <div class="header">
+    <button id="prev" aria-label="Föregående månad">‹</button>
+    <div class="title" id="title"></div>
+    <button id="next" aria-label="Nästa månad">›</button>
+  </div>
+  <div class="weekdays" id="weekdays"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+const months=[
+  "januari","februari","mars","april","maj","juni",
+  "juli","augusti","september","oktober","november","december"
+];
+const weekdayNames=["M","T","O","T","F","L","S"];
+
+const title=document.getElementById("title");
+const grid=document.getElementById("grid");
+const weekdays=document.getElementById("weekdays");
+
+weekdayNames.forEach(name=>{
+  const el=document.createElement("div");
+  el.className="weekday";
+  el.textContent=name;
+  weekdays.appendChild(el);
+});
+
+const today=new Date();
+let current=new Date(today.getFullYear(),today.getMonth(),1);
+
+function render(){
+  const year=current.getFullYear();
+  const month=current.getMonth();
+
+  title.textContent=months[month][0].toUpperCase()+months[month].slice(1)+" "+year;
+  grid.innerHTML="";
+
+  const firstDay=new Date(year,month,1);
+  const offset=(firstDay.getDay()+6)%7; // Monday first
+  const numberOfDays=new Date(year,month+1,0).getDate();
+
+  for(let i=0;i<offset;i++){
+    const empty=document.createElement("div");
+    empty.className="day empty";
+    grid.appendChild(empty);
+  }
+
+  for(let day=1;day<=numberOfDays;day++){
+    const cell=document.createElement("div");
+    cell.className="day";
+    cell.textContent=day;
+
+    if(
+      year===today.getFullYear() &&
+      month===today.getMonth() &&
+      day===today.getDate()
+    ) cell.classList.add("today");
+
+    grid.appendChild(cell);
+  }
+}
+
+document.getElementById("prev").addEventListener("click",()=>{
+  current=new Date(current.getFullYear(),current.getMonth()-1,1);
+  render();
+});
+document.getElementById("next").addEventListener("click",()=>{
+  current=new Date(current.getFullYear(),current.getMonth()+1,1);
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
