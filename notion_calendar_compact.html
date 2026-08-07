@@ -86,16 +86,35 @@
     color:var(--today-text);
   }
 
-  @media (max-width:420px){
-    .header{height:34px;grid-template-columns:28px 1fr 28px}
-    .title{font-size:14px}
-    button{width:27px;height:27px;font-size:20px}
-    .weekday{font-size:10px;padding-bottom:4px}
-    .day{font-size:12px;border-radius:5px}
+@media (max-width:420px){
+  .header{
+    height:34px;
+    gap:8px;
   }
+
+  .title{
+    font-size:14px;
+  }
+
+  button{
+    width:27px;
+    height:27px;
+    font-size:20px;
+  }
+
+  .weekday{
+    font-size:10px;
+    padding-bottom:4px;
+  }
+
+  .day{
+    font-size:12px;
+    border-radius:5px;
+  }
+}
   html, body{
     margin:0;
-    adding:0;
+    padding:0;
   height:auto;
   min-height:0;
   overflow:hidden;
