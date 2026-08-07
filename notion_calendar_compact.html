@@ -131,7 +131,10 @@ function render(){
   const year=current.getFullYear();
   const month=current.getMonth();
 
-  title.textContent=months[month][0].toUpperCase()+months[month].slice(1)+" "+year;
+  title.textContent=
+    months[month][0].toUpperCase()+
+    months[month].slice(1)+" "+year;
+
   grid.innerHTML="";
 
   const firstDay=new Date(year,month,1);
@@ -139,12 +142,14 @@ function render(){
   const numberOfDays=new Date(year,month+1,0).getDate();
   const previousMonthDays=new Date(year,month,0).getDate();
 
-  // Föregående månads dagar.
+  // Föregående månads dagar
   for(let i=offset-1;i>=0;i--){
-    grid.appendChild(makeDay(previousMonthDays-i,true));
+    grid.appendChild(
+      makeDay(previousMonthDays-i,true)
+    );
   }
 
-  // Aktuell månads dagar.
+  // Aktuell månads dagar
   for(let day=1;day<=numberOfDays;day++){
     const cell=makeDay(day);
 
@@ -159,13 +164,16 @@ function render(){
     grid.appendChild(cell);
   }
 
-// Fyll bara ut till en komplett sista vecka.
-const totalCells = grid.children.length;
-const remaining = (7 - (totalCells % 7)) % 7;
+  // Nästa månads dagar – endast tills veckan är komplett.
+  const remainder=grid.children.length % 7;
 
-for(let day=1;day<=remaining;day++){
-  grid.appendChild(makeDay(day,true));
-}
+  if(remainder !== 0){
+    const daysToAdd=7-remainder;
+
+    for(let day=1;day<=daysToAdd;day++){
+      grid.appendChild(makeDay(day,true));
+    }
+  }
 }
 
 document.getElementById("prev").addEventListener("click",()=>{
